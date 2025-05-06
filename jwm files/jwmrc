@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<JWM>
+
+<StartupCommand>
+feh --bg-fill /home/dc/Pictures/ign_unicorn.png
+/usr/bin/lxpolkit
+</StartupCommand>
+
+    <!-- The root menu. -->
+    <RootMenu onroot="3">
+	<Program icon="lxterminal" label="Terminal">lxterminal</Program>
+	<Program icon="org.xfce.thunar" label="File Manager">thunar</Program>
+	<Program icon="io.github.cboxdoerfer.FSearch" label="FSearch">fsearch</Program>
+<Separator />
+
+<Menu icon="applications-utilities" label="Accessories">
+  <Program icon="io.github.cboxdoerfer.FSearch" label="FSearch">fsearch</Program>
+  <Program icon="org.xfce.mousepad" label="Mousepad">mousepad</Program>
+  <Program icon="org.xfce.thunar" label="Bulk Rename">thunar --bulk-rename</Program>
+</Menu>
+<Menu icon="applications-internet" label="Network">
+  <Program icon="firefox" label="Firefox">firefox</Program>
+</Menu>
+<Menu icon="applications-accessories" label="Settings">
+  <Program icon="org.xfce.volman" label="Removable Drives and Media">thunar-volman-settings</Program>
+  <Program icon="preferences-desktop" label="Default applications for LXSession">lxsession-default-apps</Program>
+  <Program icon="preferences-desktop" label="Desktop Session Settings">lxsession-edit</Program>
+  <Program icon="preferences-system-network" label="Advanced Network Configuration">nm-connection-editor</Program>
+  <Program icon="font-manager" label="font-manager">font-manager</Program>
+</Menu>
+<Menu icon="applications-system" label="System">
+  <Program icon="org.gnome.DiskUtility" label="Disks">gnome-disks</Program>
+  <Program icon="gparted" label="GParted">/usr/bin/gparted</Program>
+  <Program icon="grsync" label="Grsync">/usr/bin/grsync -i</Program>
+  <Program icon="htop" label="Htop">lxterminal -e 'htop'</Program>
+  <Program icon="lxterminal" label="LXTerminal">lxterminal</Program>
+  <Program icon="org.xfce.thunar" label="Thunar">thunar</Program>
+</Menu>
+        <Separator/>
+        <Program label="Reboot">systemctl reboot</Program>
+        <Program label="Shutdown">systemctl poweroff</Program>
+    </RootMenu>
+
+
+<!-- Tray at the bottom. -->
+    <Tray x="0" y="-1" autohide="off">
+        
+        <TrayButton icon="/home/dc/Icons/arch.png">root:3</TrayButton>
+        	<Spacer width="2"/>
+        
+        <TrayButton icon="/home/dc/Icons/Term.png">exec:lxterminal</TrayButton>
+			<Spacer width="2"/>
+				
+        <TrayButton icon="/home/dc/Icons/file_manager2.png">exec:thunar</TrayButton>
+			<Spacer width="2"/>
+		        
+		<TrayButton icon="/home/dc/Icons/find.png">exec:fsearch</TrayButton>
+			<Spacer width="2"/>
+
+		<TrayButton icon="/home/dc/Icons/firefox.png">exec:firefox</TrayButton>
+			<Spacer width="2"/>
+
+        <TaskList maxwidth="256"/>
+        
+         <Dock/>
+      
+        <Clock  format="%l:%M %p" zone="America/Los_Angeles"></Clock>
+     		<Spacer width="4"/>
+		<TrayButton icon="/home/dc/Icons/logout2.png">exec:jwm -exit</TrayButton>
+   	 		<Spacer width="2"/>
+    </Tray>
+    
+<!-- Visual Styles -->
+		<TaskListStyle>
+    		<ActiveForeground>white</ActiveForeground>
+    		<ActiveBackground>#70849d:#2e3a67</ActiveBackground>
+		</TaskListStyle>
+	<WindowStyle>
+		<Font>FreeSans-12:bold</Font>
+		<Width>6</Width>
+		<Height>24</Height>
+		<Active>
+			<Text>#bababa</Text>
+			<Title>#474c52:#303438</Title>
+			<Outline>grey</Outline>
+			<Opacity>1.0</Opacity>
+		</Active>
+		<Inactive>
+			<Text>white</Text>
+			<Title>#676a6d:#7e8b9b</Title>
+			<Outline>grey</Outline>
+			<Opacity>0.5:0.9:0.1</Opacity>
+		</Inactive>
+	</WindowStyle>
+	<TaskListStyle>
+		<Font>-*-fixed-*-r-*-*-10-*-*-*-*-*-*-*</Font>
+		<ActiveForeground>black</ActiveForeground>
+		<ActiveBackground>white:#133296</ActiveBackground>
+		<Foreground>white</Foreground>
+		<Background>:black</Background>
+	</TaskListStyle>
+
+<!-- Additional TrayStyle attribute: insert -->
+	<TrayStyle>
+		<Font>-*-fixed-*-r-*-*-12-*-*-*-*-*-*-*</Font>
+		<Background>#474c52</Background>
+		<Foreground>white</Foreground>
+		<Opacity>0.75</Opacity>
+	</TrayStyle>
+	<PagerStyle>
+		<Outline>black</Outline>
+		<Foreground>gray90</Foreground>
+		<Background>#808488</Background>
+		<ActiveForeground>#70849d</ActiveForeground>
+		<ActiveBackground>#2e3a67</ActiveBackground>
+	</PagerStyle>
+    <MenuStyle>
+        <Font>Sans-10</Font>
+        <Foreground>#FFFFFF</Foreground>
+        <Background>#333333</Background>
+        <Outline>#000000</Outline>
+        <Active>
+            <Foreground>#FFFFFF</Foreground>
+            <Background>#0077CC</Background>
+        </Active>
+        <Opacity>0.85</Opacity>
+    </MenuStyle>
+    <PopupStyle>
+        <Font>Sans-9</Font>
+        <Foreground>#000000</Foreground>
+        <Background>#999999</Background>
+    </PopupStyle>
+	<IconPath>/usr/share/icons/Dracula</IconPath>
+	
+<!-- Virtual Desktops -->
+	<!-- Desktop tags can be contained within Desktops for desktop 
+	names. -->
+	
+	<Desktops width="1" height="1">
+	<!-- Default background. Note that a Background tag can be
+	contained within a Desktop tag to give a specific background
+	for that desktop.
+	-->
+	</Desktops>
+
+<!-- Double click speed (in milliseconds) -->
+	<DoubleClickSpeed>600</DoubleClickSpeed>
+
+<!-- Double click delta (in pixels) -->
+	<DoubleClickDelta>5</DoubleClickDelta>
+
+<!-- The focus model (sloppy or click) -->
+	<FocusModel>click</FocusModel>
+
+<!-- The snap mode (none, screen, or border) -->
+	<SnapMode distance="10">border</SnapMode>
+
+<!-- The move mode (outline or opaque) -->
+	<MoveMode>opaque</MoveMode>
+
+<!-- The resize mode (outline or opaque) -->
+	<ResizeMode>opaque</ResizeMode>
+
+
+<!-- Key bindings -->
+	<Key key="Up">up</Key>
+	<Key key="Down">down</Key>
+	<Key key="Right">right</Key>
+	<Key key="Left">left</Key>
+	<Key key="h">left</Key>
+	<Key key="j">down</Key>
+	<Key key="k">up</Key>
+	<Key key="l">right</Key>
+	<Key key="Return">select</Key>
+	<Key key="Escape">escape</Key>
+	<Key mask="A" key="Tab">nextstacked</Key>
+	<Key mask="A" key="F4">close</Key>
+	<Key mask="A" key="#">desktop#</Key>
+	<Key mask="A" key="F1">root:3</Key>
+	<Key mask="A" key="F2">window</Key>
+	<Key mask="A" key="F10">maximize</Key>
+	<Key mask="A" key="Right">rdesktop</Key>
+	<Key mask="A" key="Left">ldesktop</Key>
+	<Key mask="A" key="Up">udesktop</Key>
+	<Key mask="A" key="Down">ddesktop</Key>
+	<Key mask="" key="Super_L">root:3</Key>
+</JWM>
