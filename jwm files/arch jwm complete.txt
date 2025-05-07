@@ -1,0 +1,213 @@
+#install arch w/xorg
+
+#login as root
+
+#install nano & openssh
+pacman -S nano openssh
+
+systemctl enable sshd
+
+
+gpasswd -a dc wheel 
+
+EDITOR=nano visudo
+#Uncomment to have all wheel group be authorised 
+%wheel ALL=(ALL:ALL) ALL
+
+===========================reboot===========================
+
+#ADDING SSH ID TO SERVER FOR NO PASS
+ssh-copy-id -i ~/.ssh/id_ed25519.pub dc@10.0.1.39
+
+#use ssh dc to log in
+ 
+========================install yay & JWM====================
+
+sudo pacman -S gvfs thunar networkmanager network-manager-applet 
+
+
+sudo pacman -S lightdm lightdm-gtk-greeter
+
+#START SERVICES
+sudo systemctl enable lightdm
+
+
+sudo pacman -S lxterminal mousepad htop feh 7zip gparted grsync udisks2 tumbler lxsession-gtk3 thunar-volman thunar-archive-plugin libgsf libjpeg libxmu cairo pango gnome-disk-utility git wget okular firefox
+
+
+#INSTALL OF YAY
+sudo pacman -S base-devel
+mkdir downloads
+mkdir pictures
+cd ~/downloads
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+
+yay -S fsearch qimgv raw-thumbnailer libRSVG jwm mediainfo-gui
+
+===========================reboot===========================
+
+===========================edit jwm=========================
+#Make .jwmrc via copy
+cp -i /etc/system.jwmrc ~/.jwmrc
+
+nano ~/.jwmrc
+
+#copy over .jwmrc file to home dir overwriting 
+       
+#################IGNORE AND JUST OVERWRITE .JWMRC
+===========================reboot===========================
+
+sudo systemctl disable iwd
+sudo systemctl enable NetworkManager
+
+set up nm-connection-editor
+
+===========================reboot===========================
+
+#gen menu
+
+yay -S jwmappmenugen-git
+
+#                                                                                                                                                                                                 
+#############################OVERWRITTING .JWMRC WILL TAKE CARE OF THIS
+-------------------------------sudo reboot-------------------------------
+
+#thunar - copy/paste custom actions
+
+sudo nano /home/dc/.config/Thunar/uca.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+<action>
+	<icon>lxterminal</icon>
+	<name>Open Terminal Here</name>
+	<submenu></submenu>
+	<unique-id>1742858129052158-1</unique-id>
+	<command>/usr/bin/lxterminal</command>
+	<description>Example for a custom action</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon>org.xfce.thunar</icon>
+	<name>Open thunar as root here</name>
+	<submenu></submenu>
+	<unique-id>1742860311602961-2</unique-id>
+	<command>pkexec /usr/bin/thunar %f</command>
+	<description></description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon>org.xfce.mousepad</icon>
+	<name>Edit file as root</name>
+	<submenu></submenu>
+	<unique-id>1742861175665916-3</unique-id>
+	<command>pkexec /usr/bin/mousepad %f</command>
+	<description></description>
+	<range>*</range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
+</action>
+</actions>
+---------------------------------------------------------------------
+#thunar options 
+
+sudo nano /usr/share/gvfs/mounts/network.mount
+#change AutoMount=true to AutoMount=false
+
+Right click in the Side Pane where there are no shortcuts, like on the DEVICES section label. Then you will get a pop-up menu where you can uncheck items you do not want displayed.
+
+-------------------------------------------------------------------
+#INSTALL XRDP & XORGXRDP
+yay xrdp 
+yay xorgxrdp
+
+sudo systemctl enable xrdp
+
+#copy .xinitrc
+cp /etc/X11/xinit/xinitrc ~/.xinitrc
+
+#EDIT .xinitrc TO START JWM
+sudo nano  ~/.xinitrc
+
+#!/bin/sh
+
+exec jwm
+exec nm-applet
+
+#################################OVERWRITE .XINIITRC
+-------------------------------------------------------------------
+#docker
+sudo pacman -S docker docker-compose
+
+sudo systemctl enable docker
+
+gpasswd -a dc docker
+============================================================
+<StartupCommand>
+feh --bg-fill /home/dc/Pictures/arch-nord-dark.png
+/usr/bin/lxpolkit
+</StartupCommand>
+##########################NOT NEEDED KEPT FOR REFERENCE
+
+----------------------# FOR CRUCIAL X9 DRIVE--------------------- 
+sudo mkdir /mnt/crux9
+
+# PERMISSION THIS SO THE DC USER OWNS IT, AND EVERYONE ELSE CAN READ AND WRITE IN IT:
+sudo chown -R dc:dc /mnt/crux9
+sudo chmod -R 760 /mnt/crux9
+
+# FSTAB ENTRY
+doas nano /etc/fstab
+
+
+UUID=13e1cb8d-424c-4aa9-abb1-ee78e382a424 /mnt/crux9/      ext4    defaults        0       0
+
+==========================USE GNOME DISKS=========================
+
+picom =fancy window effects add to autorun picom -b -c
+jwmappmenugen-git
+jwmappmenugen -g -i
+===================================================================
+add file in etc/x11/Xwrapper.config for non-root permission in xrdp
+
+sudo nano /etc/X11/Xwrapper.config
+
+allowed_users=anybody
+needs_root_rights=no
+
+===================================================================
+#fonts
+
+yay -S gucharmap font-manager noto-fonts gohufont-powerline jmk-x11-fonts-git nerd-fonts-fira-code otf-sfmono-patched scientifica siji-ng tamzen-font termsyn-powerline-font-git ttf-icomoon-feather ttf-material-design-iconic-font ttf-typicons otf-font-awesome papirus-icon-theme
+
+===================================================================
+
+# Enabling autologin
+Edit the LightDM configuration file and add user to autologin group.
+
+##edit lightdm.conf
+nano etc/lightdm/lightdm.conf
+##uncomment the following
+[Seat:*]
+pam-service=lightdm
+pam-autologin-service=lightdm-autologin
+autologin-user=dc
+autologin-user-timeout=0
+
+##add autologin user
+groupadd -r autologin
+gpasswd -a yourusername autologin
